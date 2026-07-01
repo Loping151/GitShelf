@@ -1,0 +1,19 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" (printf "%ss" $d.Kind))}}
+<h2 class="section">{{if eq $d.Kind "branch"}}Branches{{else}}Tags{{end}}</h2>
+<ul class="ref-list">
+  {{range $d.Refs}}
+  <li class="ref-row">
+    <a class="ref-name mono" href="{{repoURL $d.Repo.Slug (printf "/src/%s/" .Name)}}">{{.Name}}</a>
+    <span class="muted">{{if not .UpdatedAt.IsZero}}{{timeAgo .UpdatedAt}}{{end}}</span>
+    <span class="ref-actions">
+      <a class="mono small" href="{{repoURL $d.Repo.Slug (printf "/commit/%s" .Target)}}">{{shortSHA .Target}}</a>
+      <a class="btn small" href="{{repoURL $d.Repo.Slug (printf "/archive/%s.zip" .Name)}}">zip</a>
+    </span>
+  </li>
+  {{else}}
+  <li class="empty">No {{$d.Kind}}es.</li>
+  {{end}}
+</ul>
+{{end}}

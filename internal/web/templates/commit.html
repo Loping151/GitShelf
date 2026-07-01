@@ -1,0 +1,15 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "commits")}}
+<div class="commit-detail">
+  <h2 class="commit-headline">{{$d.Commit.Subject}}</h2>
+  {{if $d.Commit.Body}}<pre class="commit-body">{{$d.Commit.Body}}</pre>{{end}}
+  <div class="commit-byline muted">
+    <strong>{{$d.Commit.Author}}</strong> &lt;{{$d.Commit.AuthorEmail}}&gt;
+    committed {{formatTime $d.Commit.CommitDate}}
+    · <span class="mono">{{shortSHA $d.Commit.SHA}}</span>
+  </div>
+  <div class="diff-summary muted">{{$d.Stats.Files}} files changed, <span class="add">+{{$d.Stats.Additions}}</span> <span class="del">−{{$d.Stats.Deletions}}</span></div>
+</div>
+{{template "_diff" (dict "Diffs" $d.Diffs)}}
+{{end}}

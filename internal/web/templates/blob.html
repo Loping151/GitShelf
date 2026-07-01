@@ -1,0 +1,18 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "code")}}
+{{template "_refbar" (dict "Repo" $d.Repo "Ref" $d.Ref "Refs" $d.Refs "Crumbs" $d.Crumbs)}}
+<div class="blob-bar">
+  <span class="blob-info">{{humanSize $d.Size}}{{if $d.Result.Language}} · {{$d.Result.Language}}{{end}}{{if $d.Result.Lines}} · {{$d.Result.Lines}} lines{{end}}</span>
+  <div class="spacer"></div>
+  <a class="btn small" href="{{$d.RawURL}}">Raw</a>
+  <a class="btn small" href="{{repoURL $d.Repo.Slug (printf "/blame/%s/%s" $d.Ref $d.Path)}}">Blame</a>
+  <a class="btn small" href="{{repoURL $d.Repo.Slug (printf "/commits/%s/%s" $d.Ref $d.Path)}}">History</a>
+</div>
+{{if $d.Truncated}}
+<p class="truncated">⚠ File is larger than the render limit — showing the first part only. <a href="{{$d.RawURL}}">Download the full file.</a></p>
+{{end}}
+<div class="blob-view kind-{{$d.Result.Kind}}">
+  {{$d.Result.HTML}}
+</div>
+{{end}}

@@ -1,0 +1,26 @@
+{{define "_refbar"}}
+{{$repo := .Repo}}{{$ref := .Ref}}{{$refs := .Refs}}{{$crumbs := .Crumbs}}
+<div class="refbar">
+  {{if $refs}}
+  <label class="ref-select">
+    <span class="ref-icon">⎇</span>
+    <select class="js-nav-select">
+      <optgroup label="Branches">
+      {{range $refs}}{{if eq .Kind "branch"}}<option value="{{repoURL $repo.Slug (printf "/src/%s/" .Name)}}"{{if eq .Name $ref}} selected{{end}}>{{.Name}}</option>{{end}}{{end}}
+      </optgroup>
+      <optgroup label="Tags">
+      {{range $refs}}{{if eq .Kind "tag"}}<option value="{{repoURL $repo.Slug (printf "/src/%s/" .Name)}}"{{if eq .Name $ref}} selected{{end}}>{{.Name}}</option>{{end}}{{end}}
+      </optgroup>
+    </select>
+  </label>
+  {{end}}
+  {{if $crumbs}}
+  <nav class="crumbs">
+    {{range $i, $c := $crumbs}}{{if $i}}<span class="sep">/</span>{{end}}{{if $c.URL}}<a href="{{$c.URL}}">{{$c.Name}}</a>{{else}}<span>{{$c.Name}}</span>{{end}}{{end}}
+  </nav>
+  {{end}}
+  <div class="spacer"></div>
+  <a class="btn small" href="{{repoURL $repo.Slug (printf "/archive/%s.zip" $ref)}}">⬇ zip</a>
+  <a class="btn small" href="{{repoURL $repo.Slug (printf "/archive/%s.tar.gz" $ref)}}">⬇ tar.gz</a>
+</div>
+{{end}}

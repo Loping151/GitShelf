@@ -1,0 +1,20 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "code")}}
+<div class="blob-bar">
+  <span class="blob-info">Blame · <span class="mono">{{$d.Path}}</span> @ {{$d.Ref}}</span>
+  <div class="spacer"></div>
+  <a class="btn small" href="{{repoURL $d.Repo.Slug (printf "/src/%s/%s" $d.Ref $d.Path)}}">View file</a>
+</div>
+<table class="blame-table">
+  <tbody>
+  {{range $d.Lines}}
+  <tr>
+    <td class="blame-sha"><a class="mono" href="{{repoURL $d.Repo.Slug (printf "/commit/%s" .SHA)}}" title="{{.Author}} · {{formatTime .Date}}">{{shortSHA .SHA}}</a></td>
+    <td class="blame-ln" id="L{{.LineNo}}">{{.LineNo}}</td>
+    <td class="blame-code"><pre><code>{{.Content}}</code></pre></td>
+  </tr>
+  {{end}}
+  </tbody>
+</table>
+{{end}}

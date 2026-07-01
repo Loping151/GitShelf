@@ -1,0 +1,11 @@
+{{define "_timeline"}}
+{{$author := .Author}}{{$created := .Created}}{{$body := .BodyHTML}}{{$url := .URL}}
+<div class="tl-item">
+  <div class="tl-head">
+    <strong>{{$author}}</strong>
+    <span class="muted">commented {{timeAgo $created}}</span>
+    {{if $url}}<a class="muted small" href="{{$url}}" target="_blank" rel="noopener">↗</a>{{end}}
+  </div>
+  <div class="tl-body markdown-body">{{$body}}</div>
+</div>
+{{end}}

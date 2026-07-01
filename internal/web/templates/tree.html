@@ -1,0 +1,11 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "code")}}
+{{template "_refbar" (dict "Repo" $d.Repo "Ref" $d.Ref "Refs" $d.Refs "Crumbs" $d.Crumbs)}}
+{{template "_filetable" (dict "Repo" $d.Repo "Ref" $d.Ref "Dir" $d.Dir "Entries" $d.Entries)}}
+{{if $d.ReadmeHTML}}
+<article class="readme markdown-body">
+  {{$d.ReadmeHTML}}
+</article>
+{{end}}
+{{end}}

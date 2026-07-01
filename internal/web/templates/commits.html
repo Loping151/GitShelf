@@ -1,0 +1,22 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "commits")}}
+<h2 class="section">Commits on <span class="mono">{{$d.Ref}}</span>{{if $d.Path}} · {{$d.Path}}{{end}} <span class="muted">({{$d.Total}})</span></h2>
+<ul class="commit-list">
+  {{range $d.Commits}}
+  <li class="commit-row">
+    <div class="commit-main">
+      <a class="commit-subject" href="{{repoURL $d.Repo.Slug (printf "/commit/%s" .SHA)}}">{{.Subject}}</a>
+      <div class="commit-meta muted">{{.Author}} committed {{timeAgo .CommitDate}}</div>
+    </div>
+    <a class="mono sha" href="{{repoURL $d.Repo.Slug (printf "/commit/%s" .SHA)}}">{{shortSHA .SHA}}</a>
+  </li>
+  {{else}}
+  <li class="empty">No commits.</li>
+  {{end}}
+</ul>
+<div class="pager">
+  {{if $d.HasPrev}}<a class="btn small" href="?page={{sub $d.Page 1}}">← Newer</a>{{end}}
+  {{if $d.HasNext}}<a class="btn small" href="?page={{add $d.Page 1}}">Older →</a>{{end}}
+</div>
+{{end}}

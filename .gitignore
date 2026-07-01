@@ -1,0 +1,15 @@
+# Build artifacts
+/gitshelf
+/dist/
+*.exe
+
+# Local config & runtime state
+/gitshelf.local.toml
+/.cache/
+
+# The original handoff spec — kept in-tree for reference but not published
+/git-browser-spec.md
+
+# Editor / OS
+.DS_Store
+*.swp

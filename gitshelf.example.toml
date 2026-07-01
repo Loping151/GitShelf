@@ -1,0 +1,45 @@
+# GitShelf example configuration.
+# Copy to gitshelf.toml and adjust. Everything is config-driven — there are no
+# hard-coded paths. Run with:  gitshelf -config gitshelf.toml
+
+[server]
+bind = "127.0.0.1:8888"   # default: local only. Use 0.0.0.0:8888 for LAN access.
+base_path = ""            # set when behind a reverse proxy sub-path, e.g. "/git"
+theme = "auto"            # auto | light | dark
+site_name = "GitShelf"
+
+# One or more repository sources. Repos are read IN PLACE — never copied.
+[[repo_source]]
+type = "directory"
+path = "/path/to/mirrors" # directory containing *.git bare/mirror repos
+glob = "*.git"
+namespace = "flat"        # flat: /<repo>   |   owner: /<owner>/<repo>
+
+# Optional: a second source with an owner layout (<root>/<owner>/<repo>.git).
+# [[repo_source]]
+# type = "directory"
+# path = "/path/to/orgs"
+# glob = "*.git"
+# namespace = "owner"
+
+# Optional metadata (issues / pull requests / releases).
+[metadata]
+provider = "json-export"  # "" (disabled) | "json-export"
+path = "/path/to/meta"    # <meta>/<repo>/{summary.json, issues/, prs/, releases/}
+# token_env = "GITHUB_TOKEN"  # reserved for the future github-api provider
+
+[renderers]
+max_render_bytes = 1048576  # text/code larger than this is shown truncated
+max_raw_bytes = 52428800    # cap on raw responses
+pdf_engine = "native"       # native (browser <object>) | pdfjs (bundled viewer)
+disable = []                # e.g. ["media", "csv"] to turn renderers off
+
+# Access control. Enabled by default (secure by default): the FIRST visit opens
+# a one-time /setup wizard to create the admin account; afterwards a login is
+# required. Set to false only if a trusted reverse proxy already handles auth,
+# or for a fully local, single-user instance.
+[auth]
+enabled = true
+
+[cache]
+dir = "/var/cache/gitshelf"  # sessions, admin credential, render cache

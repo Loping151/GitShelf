@@ -1,0 +1,20 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "issues")}}
+{{template "_metafilter" (dict "Repo" $d.Repo "Kind" "issues" "State" $d.State "Query" $d.Query "OpenCount" $d.OpenCount "ClosedCount" $d.ClosedCount)}}
+<ul class="issue-list">
+  {{range $d.Issues}}
+  <li class="issue-row">
+    <span class="state-dot state-{{lower .State}}" title="{{.State}}"></span>
+    <div class="issue-main">
+      <a class="issue-title" href="{{repoURL $d.Repo.Slug (printf "/issues/%d" .Number)}}">{{.Title}}</a>
+      <div class="issue-sub muted">#{{.Number}} opened {{timeAgo .CreatedAt}} by {{.Author.Name}}</div>
+      <div class="labels">{{range .Labels}}<span class="label">{{.Name}}</span>{{end}}</div>
+    </div>
+    {{if .Comments.TotalCount}}<span class="muted">💬 {{.Comments.TotalCount}}</span>{{end}}
+  </li>
+  {{else}}
+  <li class="empty">No issues{{if $d.Query}} matching “{{$d.Query}}”{{end}}.</li>
+  {{end}}
+</ul>
+{{end}}

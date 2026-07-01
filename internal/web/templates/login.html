@@ -1,0 +1,16 @@
+{{define "content"}}
+{{$d := .Data}}
+<div class="auth-card">
+  <h1>Sign in</h1>
+  {{if $d.Error}}<div class="alert error">{{$d.Error}}</div>{{end}}
+  <form method="post" action="{{url "/login"}}" class="auth-form">
+    <label>Username
+      <input name="username" value="{{$d.Username}}" autocomplete="username" required autofocus>
+    </label>
+    <label>Password
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn primary" type="submit">Sign in</button>
+  </form>
+</div>
+{{end}}

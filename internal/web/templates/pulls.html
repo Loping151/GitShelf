@@ -1,0 +1,19 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "pulls")}}
+{{template "_metafilter" (dict "Repo" $d.Repo "Kind" "pulls" "State" $d.State "Query" $d.Query "OpenCount" $d.OpenCount "ClosedCount" $d.ClosedCount)}}
+<ul class="issue-list">
+  {{range $d.Pulls}}
+  <li class="issue-row">
+    <span class="state-dot state-{{.EffectiveState}}" title="{{.EffectiveState}}"></span>
+    <div class="issue-main">
+      <a class="issue-title" href="{{repoURL $d.Repo.Slug (printf "/pulls/%d" .Number)}}">{{.Title}}</a>
+      <div class="issue-sub muted">#{{.Number}} {{.EffectiveState}} · {{.HeadRefName}} → {{.BaseRefName}} · by {{.Author.Name}} {{timeAgo .CreatedAt}}</div>
+    </div>
+    <span class="muted small"><span class="add">+{{.Additions}}</span> <span class="del">−{{.Deletions}}</span></span>
+  </li>
+  {{else}}
+  <li class="empty">No pull requests{{if $d.Query}} matching “{{$d.Query}}”{{end}}.</li>
+  {{end}}
+</ul>
+{{end}}

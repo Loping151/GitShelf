@@ -1,0 +1,37 @@
+{{define "layout.html"}}<!DOCTYPE html>
+<html lang="en"{{if eq .Theme "dark"}} data-theme="dark"{{else if eq .Theme "light"}} data-theme="light"{{end}}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}} · {{.SiteName}}</title>
+<link rel="stylesheet" href="{{static "/app.css"}}">
+<link rel="stylesheet" href="{{static "/highlight.css"}}">
+<link rel="icon" href="{{static "/logo.png"}}" type="image/png">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="{{url "/"}}">
+      <img src="{{static "/logo.png"}}" alt="" class="brand-logo" width="24" height="24">
+      <span>{{.SiteName}}</span>
+    </a>
+    <div class="spacer"></div>
+    <button id="theme-toggle" class="icon-btn" title="Toggle light / dark theme" aria-label="Toggle theme">◐</button>
+    {{if .AuthOn}}
+      {{if .Authed}}
+      <form method="post" action="{{url "/logout"}}" class="inline-form">
+        <button class="topbar-btn" title="Sign out">⎋ Sign out</button>
+      </form>
+      {{end}}
+    {{end}}
+  </div>
+</header>
+<main class="container">
+{{template "content" .}}
+</main>
+<footer class="footer">
+  <span>Served read-only by <strong>{{.SiteName}}</strong> · in-place, zero-copy</span>
+</footer>
+<script src="{{static "/app.js"}}"></script>
+</body>
+</html>{{end}}

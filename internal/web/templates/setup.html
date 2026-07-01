@@ -1,0 +1,20 @@
+{{define "content"}}
+{{$d := .Data}}
+<div class="auth-card">
+  <h1>Welcome to {{.SiteName}}</h1>
+  <p class="muted">First-run setup. Create the administrator account that will be required to access this server.</p>
+  {{if $d.Error}}<div class="alert error">{{$d.Error}}</div>{{end}}
+  <form method="post" action="{{url "/setup"}}" class="auth-form">
+    <label>Username
+      <input name="username" value="{{$d.Username}}" autocomplete="username" required autofocus>
+    </label>
+    <label>Password <span class="muted small">(min 8 characters)</span>
+      <input name="password" type="password" autocomplete="new-password" minlength="8" required>
+    </label>
+    <label>Confirm password
+      <input name="confirm" type="password" autocomplete="new-password" minlength="8" required>
+    </label>
+    <button class="btn primary" type="submit">Create account &amp; continue</button>
+  </form>
+</div>
+{{end}}

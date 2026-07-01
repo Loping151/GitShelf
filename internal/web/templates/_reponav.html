@@ -1,0 +1,19 @@
+{{define "_reponav"}}
+{{$repo := .Repo}}{{$active := .Active}}{{$counts := .Counts}}
+<div class="repo-head">
+  <h1 class="repo-title">
+    {{if $repo.Owner}}<span class="muted">{{$repo.Owner}} /</span> {{end}}<a href="{{repoURL $repo.Slug}}">{{$repo.Name}}</a>
+  </h1>
+  {{if $repo.Description}}<p class="repo-desc">{{$repo.Description}}</p>{{end}}
+</div>
+<nav class="repo-tabs">
+  <a href="{{repoURL $repo.Slug}}" class="{{if eq $active "code"}}active{{end}}">Code</a>
+  <a href="{{repoURL $repo.Slug "/commits"}}" class="{{if eq $active "commits"}}active{{end}}">Commits</a>
+  <a href="{{repoURL $repo.Slug "/branches"}}" class="{{if eq $active "branches"}}active{{end}}">Branches</a>
+  <a href="{{repoURL $repo.Slug "/tags"}}" class="{{if eq $active "tags"}}active{{end}}">Tags</a>
+  <a href="{{repoURL $repo.Slug "/issues"}}" class="{{if eq $active "issues"}}active{{end}}">Issues{{if and $counts $counts.Issues}} <span class="badge">{{$counts.Issues}}</span>{{end}}</a>
+  <a href="{{repoURL $repo.Slug "/pulls"}}" class="{{if eq $active "pulls"}}active{{end}}">Pull Requests{{if and $counts $counts.PullRequests}} <span class="badge">{{$counts.PullRequests}}</span>{{end}}</a>
+  <a href="{{repoURL $repo.Slug "/releases"}}" class="{{if eq $active "releases"}}active{{end}}">Releases{{if and $counts $counts.Releases}} <span class="badge">{{$counts.Releases}}</span>{{end}}</a>
+  <a href="{{repoURL $repo.Slug "/search"}}" class="{{if eq $active "search"}}active{{end}}">Search</a>
+</nav>
+{{end}}

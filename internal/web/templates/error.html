@@ -1,0 +1,8 @@
+{{define "content"}}
+{{$d := .Data}}
+<div class="error-page">
+  <h1>{{$d.Code}}</h1>
+  <p class="muted">{{$d.Message}}</p>
+  <a class="btn" href="{{url "/"}}">← Back to repositories</a>
+</div>
+{{end}}

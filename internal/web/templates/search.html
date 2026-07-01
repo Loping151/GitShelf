@@ -1,0 +1,22 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "search")}}
+<form class="search-form" method="get" action="">
+  <input type="hidden" name="rev" value="{{$d.Ref}}">
+  <input name="q" value="{{$d.Query}}" placeholder="Search code in {{$d.Ref}}…" class="input grow" autofocus>
+  <button class="btn" type="submit">Search</button>
+</form>
+{{if $d.Query}}
+<p class="muted">{{len $d.Hits}} matches for <span class="mono">{{$d.Query}}</span> in <span class="mono">{{$d.Ref}}</span></p>
+<ul class="search-hits">
+  {{range $d.Hits}}
+  <li>
+    <a class="mono" href="{{repoURL $d.Repo.Slug (printf "/src/%s/%s" $d.Ref .Path)}}#L{{.LineNo}}">{{.Path}}:{{.LineNo}}</a>
+    <pre class="hit-line"><code>{{.Content}}</code></pre>
+  </li>
+  {{else}}
+  <li class="empty">No matches.</li>
+  {{end}}
+</ul>
+{{end}}
+{{end}}

@@ -1,0 +1,22 @@
+{{define "_filetable"}}
+{{$repo := .Repo}}{{$ref := .Ref}}
+<table class="file-table">
+  <tbody>
+    {{if .Dir}}
+    <tr class="up">
+      <td class="ic">⤴</td>
+      <td colspan="2"><a href="{{repoURL $repo.Slug (printf "/src/%s/%s" $ref (pathDir .Dir))}}">..</a></td>
+    </tr>
+    {{end}}
+    {{range .Entries}}
+    <tr>
+      <td class="ic">{{if .IsDir}}📁{{else}}📄{{end}}</td>
+      <td class="name">
+        <a href="{{repoURL $repo.Slug (printf "/src/%s/%s" $ref .Path)}}">{{.Name}}</a>
+      </td>
+      <td class="size">{{if not .IsDir}}{{humanSize .Size}}{{end}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{end}}

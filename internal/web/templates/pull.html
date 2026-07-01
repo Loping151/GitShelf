@@ -1,0 +1,45 @@
+{{define "content"}}
+{{$d := .Data}}{{$p := $d.PR}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "pulls")}}
+<div class="issue-detail">
+  <h1 class="issue-h">{{$p.Title}} <span class="muted">#{{$p.Number}}</span></h1>
+  <div class="issue-status">
+    <span class="state-pill state-{{$p.EffectiveState}}">{{$p.EffectiveState}}</span>
+    <span class="muted">{{$p.Author.Name}} wants to merge <span class="mono">{{$p.HeadRefName}}</span> into <span class="mono">{{$p.BaseRefName}}</span></span>
+    {{if $p.URL}}<a class="muted small" href="{{$p.URL}}" target="_blank" rel="noopener">View on origin ↗</a>{{end}}
+  </div>
+  <div class="pr-stats muted">
+    {{$p.ChangedFiles}} files · <span class="add">+{{$p.Additions}}</span> <span class="del">−{{$p.Deletions}}</span> · {{$p.Commits.TotalCount}} commits
+  </div>
+  <div class="timeline">
+    {{template "_timeline" (dict "Author" $p.Author.Name "Created" $p.CreatedAt "BodyHTML" $d.BodyHTML "URL" $p.URL)}}
+    {{range $d.Comments}}
+    {{template "_timeline" (dict "Author" .Author "Created" .CreatedAt "BodyHTML" .Body "URL" .URL)}}
+    {{end}}
+  </div>
+  {{if $p.Reviews}}
+  <h3 class="section">Reviews</h3>
+  <ul class="review-list">
+    {{range $p.Reviews}}
+    <li><span class="review-state review-{{lower .State}}">{{.State}}</span> <strong>{{.Author.Name}}</strong> <span class="muted">{{timeAgo .SubmittedAt}}</span></li>
+    {{end}}
+  </ul>
+  {{end}}
+  {{if $p.Files.Nodes}}
+  <h3 class="section">Changed files ({{$p.Files.TotalCount}})</h3>
+  <ul class="pr-files">
+    {{range $p.Files.Nodes}}
+    <li><span class="mono">{{.Path}}</span> <span class="muted small"><span class="add">+{{.Additions}}</span> <span class="del">−{{.Deletions}}</span></span></li>
+    {{end}}
+  </ul>
+  {{end}}
+  {{if $p.Commits.Nodes}}
+  <h3 class="section">Commits</h3>
+  <ul class="commit-list">
+    {{range $p.Commits.Nodes}}
+    <li class="commit-row"><span class="commit-subject">{{.Commit.MessageHeadline}}</span><span class="mono sha">{{shortSHA .Commit.OID}}</span></li>
+    {{end}}
+  </ul>
+  {{end}}
+</div>
+{{end}}

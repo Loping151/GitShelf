@@ -1,0 +1,28 @@
+{{define "_diff"}}
+{{range .Diffs}}
+<div class="file-diff">
+  <div class="file-diff-head">
+    <span class="status status-{{.Status}}">{{.Status}}</span>
+    <span class="mono">{{if .NewPath}}{{.NewPath}}{{else}}{{.OldPath}}{{end}}</span>
+    <span class="spacer"></span>
+    <span class="diff-stat"><span class="add">+{{.Additions}}</span> <span class="del">−{{.Deletions}}</span></span>
+  </div>
+  {{if .Binary}}
+  <div class="diff-binary muted">Binary file not shown.</div>
+  {{else}}
+  <table class="diff-table">
+    {{range .Hunks}}
+    <tr class="hunk-head"><td class="ln"></td><td class="ln"></td><td class="code">{{.Header}}</td></tr>
+    {{range .Lines}}
+    <tr class="dl dl-{{printf "%c" .Kind}}">
+      <td class="ln">{{if .Old}}{{.Old}}{{end}}</td>
+      <td class="ln">{{if .New}}{{.New}}{{end}}</td>
+      <td class="code">{{printf "%c" .Kind}}{{.Content}}</td>
+    </tr>
+    {{end}}
+    {{end}}
+  </table>
+  {{end}}
+</div>
+{{end}}
+{{end}}

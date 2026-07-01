@@ -1,0 +1,19 @@
+{{define "content"}}
+{{$d := .Data}}{{$i := $d.Issue}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "issues")}}
+<div class="issue-detail">
+  <h1 class="issue-h">{{$i.Title}} <span class="muted">#{{$i.Number}}</span></h1>
+  <div class="issue-status">
+    <span class="state-pill state-{{lower $i.State}}">{{$i.State}}{{if $i.StateReason}} · {{$i.StateReason}}{{end}}</span>
+    <span class="muted">{{$i.Author.Name}} opened this {{timeAgo $i.CreatedAt}} · {{$i.Comments.TotalCount}} comments</span>
+    {{if $i.URL}}<a class="muted small" href="{{$i.URL}}" target="_blank" rel="noopener">View on origin ↗</a>{{end}}
+  </div>
+  <div class="labels">{{range $i.Labels}}<span class="label">{{.Name}}</span>{{end}}</div>
+  <div class="timeline">
+    {{template "_timeline" (dict "Author" $i.Author.Name "Created" $i.CreatedAt "BodyHTML" $d.BodyHTML "URL" $i.URL)}}
+    {{range $d.Comments}}
+    {{template "_timeline" (dict "Author" .Author "Created" .CreatedAt "BodyHTML" .Body "URL" .URL)}}
+    {{end}}
+  </div>
+</div>
+{{end}}

@@ -1,0 +1,31 @@
+{{define "content"}}
+<div class="page-head">
+  <h1>Repositories</h1>
+  <p class="muted">{{len .Data.Repos}} repositories · browsed in place, nothing copied.</p>
+</div>
+<ul class="repo-list">
+  {{range .Data.Repos}}
+  <li class="repo-card">
+    <div class="repo-card-main">
+      <a class="repo-link" href="{{repoURL .Slug}}">
+        {{if .Owner}}<span class="muted">{{.Owner}}/</span>{{end}}{{.Name}}
+      </a>
+      {{if .Description}}<p class="repo-desc">{{.Description}}</p>{{end}}
+      <div class="repo-meta">
+        {{if .DefaultRef}}<span class="chip">⎇ {{.DefaultRef}}</span>{{end}}
+        {{if .LastCommit}}<span title="{{formatTime .LastCommit.CommitDate}}">updated {{timeAgo .LastCommit.CommitDate}}</span>{{end}}
+      </div>
+    </div>
+    {{if .HasMeta}}
+    <div class="repo-card-counts">
+      <span title="issues">⊙ {{.Issues}}</span>
+      <span title="pull requests">⇄ {{.PullReqs}}</span>
+      <span title="releases">⛿ {{.Releases}}</span>
+    </div>
+    {{end}}
+  </li>
+  {{else}}
+  <li class="empty">No repositories found. Check your <code>[[repo_source]]</code> configuration.</li>
+  {{end}}
+</ul>
+{{end}}

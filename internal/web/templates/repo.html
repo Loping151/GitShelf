@@ -1,0 +1,18 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "code" "Counts" $d.Counts)}}
+{{template "_refbar" (dict "Repo" $d.Repo "Ref" $d.Ref "Refs" $d.Refs "Crumbs" $d.Crumbs)}}
+{{if $d.LastCommit}}
+<div class="last-commit">
+  <a class="mono" href="{{repoURL $d.Repo.Slug (printf "/commit/%s" $d.LastCommit.SHA)}}">{{shortSHA $d.LastCommit.SHA}}</a>
+  <span class="lc-subject">{{$d.LastCommit.Subject}}</span>
+  <span class="muted">— {{$d.LastCommit.Author}}, {{timeAgo $d.LastCommit.CommitDate}}</span>
+</div>
+{{end}}
+{{template "_filetable" (dict "Repo" $d.Repo "Ref" $d.Ref "Dir" $d.Dir "Entries" $d.Entries)}}
+{{if $d.ReadmeHTML}}
+<article class="readme markdown-body">
+  {{$d.ReadmeHTML}}
+</article>
+{{end}}
+{{end}}

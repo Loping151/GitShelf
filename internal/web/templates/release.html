@@ -1,0 +1,25 @@
+{{define "content"}}
+{{$d := .Data}}{{$r := $d.Release}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "releases")}}
+<div class="release-detail">
+  <h1 class="release-h">{{if $r.Name}}{{$r.Name}}{{else}}{{$r.TagName}}{{end}}</h1>
+  <div class="muted">
+    <span class="mono">{{$r.TagName}}</span>
+    {{if $r.IsPrerelease}}<span class="pill warn">pre-release</span>{{end}}
+    · {{if $r.Author}}{{$r.Author.Name}} · {{end}}{{formatTime $r.PublishedAt}}
+    {{if $r.URL}}· <a href="{{$r.URL}}" target="_blank" rel="noopener">origin ↗</a>{{end}}
+  </div>
+  <article class="markdown-body release-body">{{$d.BodyHTML}}</article>
+  {{if $r.ReleaseAssets.Nodes}}
+  <h3 class="section">Assets</h3>
+  <ul class="asset-list">
+    {{range $r.ReleaseAssets.Nodes}}
+    <li>
+      <a href="{{.DownloadURL}}">{{.Name}}</a>
+      <span class="muted small">{{humanSize .Size}}{{if .ContentType}} · {{.ContentType}}{{end}}</span>
+    </li>
+    {{end}}
+  </ul>
+  {{end}}
+</div>
+{{end}}

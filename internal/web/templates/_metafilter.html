@@ -1,0 +1,11 @@
+{{define "_metafilter"}}
+{{$repo := .Repo}}{{$kind := .Kind}}{{$state := .State}}
+<form class="meta-filter" method="get" action="{{repoURL $repo.Slug (printf "/%s" $kind)}}">
+  <div class="state-tabs">
+    <a href="?state=open" class="{{if eq $state "open"}}active{{else if eq $state ""}}active{{end}}">⊙ {{.OpenCount}} Open</a>
+    <a href="?state=closed" class="{{if eq $state "closed"}}active{{end}}">✓ {{.ClosedCount}} Closed</a>
+  </div>
+  <input name="q" value="{{.Query}}" placeholder="Filter by title…" class="input grow">
+  <button class="btn" type="submit">Filter</button>
+</form>
+{{end}}

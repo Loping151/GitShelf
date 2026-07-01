@@ -1,0 +1,22 @@
+{{define "content"}}
+{{$d := .Data}}
+{{template "_reponav" (dict "Repo" $d.Repo "Active" "releases")}}
+<h2 class="section">Releases</h2>
+<ul class="release-list">
+  {{range $d.Releases}}
+  <li class="release-row">
+    <div class="release-tag">
+      <a class="mono" href="{{repoURL $d.Repo.Slug (printf "/releases/%s" .TagName)}}">{{.TagName}}</a>
+      {{if .IsPrerelease}}<span class="pill warn">pre-release</span>{{end}}
+      {{if .IsDraft}}<span class="pill">draft</span>{{end}}
+    </div>
+    <div class="release-main">
+      <a class="release-name" href="{{repoURL $d.Repo.Slug (printf "/releases/%s" .TagName)}}">{{if .Name}}{{.Name}}{{else}}{{.TagName}}{{end}}</a>
+      <div class="muted small">{{if .Author}}{{.Author.Name}} · {{end}}{{timeAgo .PublishedAt}}{{if .ReleaseAssets.Nodes}} · {{len .ReleaseAssets.Nodes}} assets{{end}}</div>
+    </div>
+  </li>
+  {{else}}
+  <li class="empty">No releases.</li>
+  {{end}}
+</ul>
+{{end}}
